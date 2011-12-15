@@ -1,0 +1,47 @@
+<h1>Password Retrieval</h1>
+
+<% if notice %>
+	<p id="notice"><%= notice %></p>
+<% end %>
+
+Please enter username to retrieve password: 
+
+<%= form_tag users_path, :method => 'get' do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+  </p>
+<% end %>
+
+<% if @users %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Password</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+	
+<% for user in @users %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= user.password %></td>
+    <td><%= link_to 'Show', user %></td>
+    <td><%= link_to 'Edit', edit_user_path(user) %></td>
+    <td><%= link_to 'Destroy', user, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+
+<p><%= link_to 'New User', new_user_path %></p>
+
+<hr>
+<h3>Problems with this Page</h3>
+<p>SQL Injection Attack - SQL injection can be used to obtain database information in the search field. If you enter:
+<ul><li>user' or 'a'='a</li></ul>
+in the search field, you will get a list of all the users back.
+</p>
+<p>Plain text password - Passwords should be stored with hash and salt values.
+<p>Routes - Another problem with this site is that it doesn't restrict all the necessary routes. You can gain access to user information by entering direct routes, e.g., http://localhost:3000/users/#</p>
